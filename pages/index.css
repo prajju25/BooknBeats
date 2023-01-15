@@ -1,0 +1,19 @@
+body {
+    text-align: center;
+    align-items: center;
+    background-color: darkcyan;
+}
+@media only screen and (max-width: 600px) {
+    body {
+        width: 148% !important;
+    }
+}
+.container-body {
+    text-align: center;
+    align-items: center;
+    margin-top: 50px !important;
+}
+.search-input {
+    width: 65%;
+    margin-right: 20px;
+}
