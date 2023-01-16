@@ -31,6 +31,7 @@ const Home = (props) => {
         if(output.text) {
             let list = output.text.split('\n').filter(d=>d || d != "");
             let s = [];
+            let errMsg = '';
             for(let l of list) {
                 let val = l.replaceAll(/[0-9.\\]+/g,'').trim();
                 const response = await audioDetails(val, props.listKey);
@@ -39,16 +40,18 @@ const Home = (props) => {
                     if(info && info.link) {
                         response.link = info.link;
                         s.push(response);
-                        //setSongInfo(info);
-                        //setError({isError: false, errorMsg: ''});
-                    } else {
-                        //setError({isError: true, errorMsg: info.message});
-                        //setSongInfo({});
+                    } else if (info && info.message) {
+                        errMsg = info.message;
                     }
                 } else if (response && response.message){
-                    setError({isError: true, errorMsg: response.message});
+                    errMsg = response.message;
                     break;
                 }
+            }
+            if(errMsg) {
+                setError({isError: true, errorMsg: errMsg});
+            } else {
+                setError({isError: false, errorMsg: ''});
             }
             if(s.length > 0) setSongList(s);
         }
@@ -106,23 +109,23 @@ const Home = (props) => {
                         <Table compact celled>
                             <Table.Header>
                                 <Table.Row>
-                                <Table.HeaderCell>Player</Table.HeaderCell>
-                                <Table.HeaderCell>Song Name</Table.HeaderCell>
-                                <Table.HeaderCell>Artist</Table.HeaderCell>
-                                <Table.HeaderCell>Duration</Table.HeaderCell>
+                                <Table.HeaderCell width={8}>Player</Table.HeaderCell>
+                                <Table.HeaderCell width={4}>Song Name</Table.HeaderCell>
+                                <Table.HeaderCell width={2}>Artist</Table.HeaderCell>
+                                <Table.HeaderCell width={2}>Duration</Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>      
                             <Table.Body>
                                 {songList.map((song)=>(
                                     <Table.Row key={song?.id}>
-                                        <Table.Cell collapsing>
+                                        <Table.Cell collapsing width={8}>
                                             <audio controls>
                                                 <source src={song?.link} type="audio/mp3" />
                                             </audio>
                                         </Table.Cell>
-                                        <Table.Cell>{song?.title}</Table.Cell>
-                                        <Table.Cell>{song?.author?.name}</Table.Cell>
-                                        <Table.Cell>{song?.duration}</Table.Cell>
+                                        <Table.Cell width={4}>{song?.title}</Table.Cell>
+                                        <Table.Cell width={2}>{song?.author?.name}</Table.Cell>
+                                        <Table.Cell width={2}>{song?.duration}</Table.Cell>
                                     </Table.Row>
                                 ))}
                             </Table.Body>

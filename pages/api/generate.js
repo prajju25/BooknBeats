@@ -3,6 +3,9 @@ import { Configuration, OpenAIApi } from 'openai';
 if(process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY==""){
   console.log("🛑 OPENAI API key not found.");
 }
+if(process.env.RECOMMENDATION_LIST || process.env.RECOMMENDATION_LIST==""){
+  console.log("🛑 RECOMMENDATION_LIST property not found.");
+}
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -10,7 +13,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const basePromptPrefix = "Recommend 3 song that match with vibe of the book ";
+const basePromptPrefix = `Recommend ${process.env.RECOMMENDATION_LIST} song that match with vibe of the book `;
 const generateAction = async (req, res) => {
   // Run first prompt
   console.log(`API: ${basePromptPrefix}"${req.body.userInput}"`);

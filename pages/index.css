@@ -7,6 +7,28 @@ body {
     body {
         width: 148% !important;
     }
+    .ui.table td.eight.wide, .ui.table th.eight.wide {
+        display: inline-block !important;
+        width: 50% !important;
+    }
+    .ui.table td.four.wide, .ui.table th.four.wide {
+        display: inline-block !important;
+        width: 25% !important;
+    }
+    .ui.table td.two.wide, .ui.table th.two.wide {
+        display: inline-block !important;
+        width: 12.5% !important;
+    }
+    table {
+        overflow-x: auto;
+        font-size: 20px !important;
+        display: block;
+        white-space: break-spaces;
+        word-break: break-all;
+    }
+    .ui.table.celled.compact tbody, .ui.table thead {
+        width: 140% !important;
+    }
 }
 .container-body {
     text-align: center;
@@ -16,4 +38,7 @@ body {
 .search-input {
     width: 65%;
     margin-right: 20px;
+}
+audio {
+    width: 100%;
 }
