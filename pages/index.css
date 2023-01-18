@@ -7,13 +7,17 @@ body {
     body {
         width: 148% !important;
     }
-    .ui.table td.eight.wide, .ui.table th.eight.wide {
+    .ui.table td.seven.wide, .ui.table th.seven.wide {
         display: inline-block !important;
-        width: 50% !important;
+        width: 43.75% !important;
     }
     .ui.table td.four.wide, .ui.table th.four.wide {
         display: inline-block !important;
         width: 25% !important;
+    }
+    .ui.table td.three.wide, .ui.table th.three.wide {
+        display: inline-block !important;
+        width: 18.75% !important;
     }
     .ui.table td.two.wide, .ui.table th.two.wide {
         display: inline-block !important;
@@ -29,6 +33,13 @@ body {
     .ui.table.celled.compact tbody, .ui.table thead {
         width: 140% !important;
     }
+    .image-preview {
+        width: 80%;
+    }
+    .audio-preview {
+        width: 85% !important;
+        margin-left: 0px !important;
+    }
 }
 .container-body {
     text-align: center;
@@ -40,5 +51,20 @@ body {
     margin-right: 20px;
 }
 audio {
-    width: 100%;
+    width: 68%;
+    margin-left: 10px;
+}
+.ui.segment {
+    background-color: darkcyan;
+    box-shadow: none;
+    border: none;
+    padding: 0px !important;
+    margin: 10px 0px 0px 0px !important;    
+}
+.image-preview, .audio-preview {
+    border: 5px solid #4cadad;
+    box-shadow: 5px -5px 20px 10px #152d2d;
+}
+.audio-preview {
+    border-radius: 30px;
 }

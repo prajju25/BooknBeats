@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Container, Grid, Input, Comment, Button, Message, Table, Icon } from 'semantic-ui-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Container, Grid, Input, Comment, Button, Message, Table, Icon, Segment } from 'semantic-ui-react';
 import Header from '../components/Header';
 import audioDetails from './api/audiodetails';
 import audioInfo from './api/audioinfo';
@@ -8,10 +8,21 @@ const Home = (props) => {
     const [searchInput, setsearchInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [songList, setSongList] = useState([]);
+    const [songPlay, setSongPlay] = useState({});
     const [error, setError] = useState({
         isError: false,
         errorMsg: ''
     });
+    const audioRef = useRef(null);
+
+    useEffect(()=>{
+        if(songPlay && Object.keys(songPlay).length > 0) {
+            if(audioRef && audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.load();
+            }
+        }
+    },[songPlay]);
 
     const searchSongs = async (e) => {        
         e.preventDefault();
@@ -53,7 +64,10 @@ const Home = (props) => {
             } else {
                 setError({isError: false, errorMsg: ''});
             }
-            if(s.length > 0) setSongList(s);
+            if(s.length > 0) {
+                setSongList(s);
+                setSongPlay(s[0]);
+            }
         }
         setIsLoading(false);
     }
@@ -103,28 +117,45 @@ const Home = (props) => {
                     </Message>
                 </Grid.Row>
                 )}
+                {songPlay && songPlay.link && (
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Segment>
+                                <img src={songPlay.firstVideo ? songPlay?.firstVideo?.bestThumbnail?.url : 
+                                (songPlay?.bestThumbnail ? songPlay.bestThumbnail.url : songPlay.thumbnails[0]?.url)} 
+                                className="image-preview"/>
+                            </Segment>
+                            <Segment>
+                                <audio controls ref={audioRef} autoPlay className='audio-preview'>
+                                    <source src={songPlay.link} type="audio/mp3" />
+                                </audio>
+                            </Segment>
+                        </Grid.Column>
+                    </Grid.Row>
+                )}
                 {songList && songList.length > 0 && (<>
                     <Grid.Row>
                         <h2>Playlist:</h2>                        
                         <Table compact celled>
                             <Table.Header>
                                 <Table.Row>
-                                <Table.HeaderCell width={8}>Player</Table.HeaderCell>
-                                <Table.HeaderCell width={4}>Song Name</Table.HeaderCell>
-                                <Table.HeaderCell width={2}>Artist</Table.HeaderCell>
+                                <Table.HeaderCell width={3}>Player</Table.HeaderCell>
+                                <Table.HeaderCell width={7}>Song Name</Table.HeaderCell>
+                                <Table.HeaderCell width={4}>Artist</Table.HeaderCell>
                                 <Table.HeaderCell width={2}>Duration</Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>      
                             <Table.Body>
                                 {songList.map((song)=>(
                                     <Table.Row key={song?.id}>
-                                        <Table.Cell collapsing width={8}>
-                                            <audio controls>
-                                                <source src={song?.link} type="audio/mp3" />
-                                            </audio>
+                                        <Table.Cell collapsing width={3}>
+                                            <Button size='huge' onClick={()=>setSongPlay(song)}>
+                                                <Icon name='play' />
+                                                Play
+                                            </Button>
                                         </Table.Cell>
-                                        <Table.Cell width={4}>{song?.title}</Table.Cell>
-                                        <Table.Cell width={2}>{song?.author?.name}</Table.Cell>
+                                        <Table.Cell width={7}>{song?.title}</Table.Cell>
+                                        <Table.Cell width={4}>{song?.author?.name}</Table.Cell>
                                         <Table.Cell width={2}>{song?.duration}</Table.Cell>
                                     </Table.Row>
                                 ))}
